@@ -69,6 +69,21 @@ function _getHumanReadableDataStatus(status: NetworkStatus): string {
   }
 }
 
+function _getHumanReadableHttpVersion(httpVersion: string): string {
+  switch (httpVersion) {
+    case 'h3':
+      return '3.0';
+    case 'h2':
+      return '2.0';
+    case 'http/1.0':
+      return '1.0';
+    case 'http/1.1':
+      return '1.1';
+    default:
+      return 'Unknown';
+  }
+}
+
 /* The preconnect phase may only contain these properties. */
 const PRECONNECT_PROPERTIES_IN_ORDER = [
   'domainLookupStart',
@@ -425,6 +440,14 @@ export function getNetworkMarkerDetails(
     details.push(
       <TooltipDetail label="Requested bytes" key="Network-Requested Bytes">
         {formatBytes(payload.count)}
+      </TooltipDetail>
+    );
+  }
+
+  if (payload.httpVersion) {
+    details.push(
+      <TooltipDetail label="HTTP Version" key="Network-HTTP Version">
+        {_getHumanReadableHttpVersion(payload.httpVersion)}
       </TooltipDetail>
     );
   }

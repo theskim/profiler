@@ -701,6 +701,111 @@ describe('TooltipMarker', function () {
     expect(getValueForProperty('Private Browsing')).toBe('Yes');
   });
 
+  it('renders page information for HTTP/1.0 pages in network markers', () => {
+    setupWithPayload(
+      getNetworkMarkers({
+        id: 1235,
+        startTime: 19000,
+        fetchStart: 19200.2,
+        endTime: 20433.8,
+        uri: 'https://example.org/index.html',
+        payload: {
+          cache: 'Hit',
+          pri: 8,
+          count: 47027,
+          contentType: 'text/html',
+          httpVersion: 'http/1.0',
+        },
+      })
+    );
+
+    expect(getValueForProperty('HTTP Version')).toBe('1.0');
+  });
+
+  it('renders page information for HTTP/1.1 pages in network markers', () => {
+    setupWithPayload(
+      getNetworkMarkers({
+        id: 1235,
+        startTime: 19000,
+        fetchStart: 19200.2,
+        endTime: 20433.8,
+        uri: 'https://example.org/index.html',
+        payload: {
+          cache: 'Hit',
+          pri: 8,
+          count: 47027,
+          contentType: 'text/html',
+          httpVersion: 'http/1.1',
+        },
+      })
+    );
+
+    expect(getValueForProperty('HTTP Version')).toBe('1.1');
+  });
+
+  it('renders page information for HTTP/2.0 pages in network markers', () => {
+    setupWithPayload(
+      getNetworkMarkers({
+        id: 1235,
+        startTime: 19000,
+        fetchStart: 19200.2,
+        endTime: 20433.8,
+        uri: 'https://example.org/index.html',
+        payload: {
+          cache: 'Hit',
+          pri: 8,
+          count: 47027,
+          contentType: 'text/html',
+          httpVersion: 'h2',
+        },
+      })
+    );
+
+    expect(getValueForProperty('HTTP Version')).toBe('2.0');
+  });
+
+  it('renders page information for HTTP/3.0 pages in network markers', () => {
+    setupWithPayload(
+      getNetworkMarkers({
+        id: 1235,
+        startTime: 19000,
+        fetchStart: 19200.2,
+        endTime: 20433.8,
+        uri: 'https://example.org/index.html',
+        payload: {
+          cache: 'Hit',
+          pri: 8,
+          count: 47027,
+          contentType: 'text/html',
+          httpVersion: 'h3',
+        },
+      })
+    );
+
+    expect(getValueForProperty('HTTP Version')).toBe('3.0');
+  });
+
+  it('renders page information for pages with an unknown HTTP version in network markers', () => {
+    setupWithPayload(
+      getNetworkMarkers({
+        id: 1235,
+        startTime: 19000,
+        fetchStart: 19200.2,
+        endTime: 20433.8,
+        uri: 'https://example.org/index.html',
+        payload: {
+          cache: 'Hit',
+          pri: 8,
+          count: 47027,
+          contentType: 'text/html',
+          httpVersion: 'dummy',
+        },
+      })
+    );
+
+    expect(getValueForProperty('HTTP Version')).toBe('Unknown');
+  });
+
   it('renders properly network markers with a preconnect part', () => {
     const { container } = setupWithPayload(
       getNetworkMarkers({

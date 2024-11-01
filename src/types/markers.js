@@ -498,6 +498,7 @@ export type NetworkPayload = {|
   // It's always absent in Firefox < 98 because we couldn't capture private
   // browsing data back then.
   isPrivateBrowsing?: boolean,
+  httpVersion?: string,
 
   // NOTE: the following comments are valid for the merged markers. For the raw
   // markers, startTime and endTime have different meanings. Please look
